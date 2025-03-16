@@ -1,20 +1,5 @@
 import React from 'react'
-import { StaticImageData } from 'next/image'
-
-// カート内アイテムの型定義
-type RamenItem = {
-  id: number;
-  name: string;
-  price: number;
-  category: 'shoyu' | 'miso';
-  allergies: string[];
-  imageUrl: string | StaticImageData;
-}
-
-type CartItem = {
-  item: RamenItem;
-  quantity: number;
-}
+import type { CartItem } from '@/app/types'
 
 type CartProps = {
   setIsCartOpen: (isCartOpen: boolean) => void;

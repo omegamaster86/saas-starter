@@ -6,22 +6,8 @@ import shoyu1 from '../../../public/shoyu1.jpeg'
 import shoyu2 from '../../../public/shoyu2.jpeg'
 import miso1 from '../../../public/miso1.jpeg'
 import miso2 from '../../../public/miso2.jpeg'
-import { StaticImageData } from 'next/image'
 import Category from './_components/category'
-
-type RamenItem = {
-  id: number;
-  name: string;
-  price: number;
-  category: 'shoyu' | 'miso';
-  allergies: string[];
-  imageUrl: string | StaticImageData;
-}
-
-type CartItem = {
-  item: RamenItem;
-  quantity: number;
-}
+import type { RamenItem, CartItem } from '@/app/types'
 
 type Category = 'all' | 'shoyu' | 'miso';
 
