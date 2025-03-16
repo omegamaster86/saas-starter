@@ -23,6 +23,8 @@ type CartItem = {
   quantity: number;
 }
 
+type Category = 'all' | 'shoyu' | 'miso';
+
 const ramenItems: RamenItem[] = [
   {
     id: 1,
@@ -59,7 +61,7 @@ const ramenItems: RamenItem[] = [
 ]
 
 const RamenShopPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState<'all' | 'shoyu' | 'miso'>('all');
+  const [selectedCategory, setSelectedCategory] = useState<Category>('all');
   
   // カート状態の管理
   const [cart, setCart] = useState<CartItem[]>([]);
