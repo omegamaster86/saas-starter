@@ -108,7 +108,7 @@ const RamenShopPage = () => {
       {/* カートサイドバー */}
       {isCartOpen && (
         <div className="fixed inset-0 z-50 overflow-hidden">
-          <div className="absolute inset-0 bg-black bg-opacity-50" onClick={() => setIsCartOpen(false)}></div>
+          <div className="absolute inset-0 bg-opacity-50" onClick={() => setIsCartOpen(false)}></div>
           <div className="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-xl transform transition-all">
             <div className="p-4 h-full flex flex-col">
               <div className="flex justify-between items-center mb-4">
@@ -171,9 +171,9 @@ const RamenShopPage = () => {
                     ))}
                   </div>
                   <div className="pt-4 border-t">
-                    <div className="flex justify-between mb-4">
+                    <div className="flex mb-4">
                       <span className="font-bold">合計:</span>
-                      <span className="font-bold">¥{totalPrice.toLocaleString()}</span>
+                      <span className="font-bold">¥{totalPrice}</span>
                     </div>
                     <button className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-md transition-colors duration-300">
                       注文する
@@ -186,7 +186,7 @@ const RamenShopPage = () => {
         </div>
       )}
       
-      <Category setSelectedCategory={setSelectedCategory} selectedCategory={selectedCategory} />
+      <Category selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}/>
       
       {/* 商品カードのグリッド */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
