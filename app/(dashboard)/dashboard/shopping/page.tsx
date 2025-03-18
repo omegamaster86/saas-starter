@@ -8,6 +8,8 @@ import miso1 from '../../../public/miso1.jpeg'
 import miso2 from '../../../public/miso2.jpeg'
 import Category from './_components/category'
 import type { RamenItem, CartItem } from '@/app/types'
+import { loadStripe } from '@stripe/stripe-js'
+import type { Stripe } from '@stripe/stripe-js';
 
 type Category = 'all' | 'shoyu' | 'miso';
 
@@ -45,6 +47,17 @@ const ramenItems: RamenItem[] = [
     imageUrl: miso2
   }
 ]
+
+const getStripe = () => {
+  let stripePromise: Promise<Stripe | null> | null = null;
+  
+  return () => {
+    if (!stripePromise) {
+      stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY ?? '');
+    }
+    return stripePromise;
+  };
+};
 
 const RamenShopPage = () => {
   const [selectedCategory, setSelectedCategory] = useState<Category>('all');
@@ -98,6 +111,44 @@ const RamenShopPage = () => {
     total + (cartItem.item.price * cartItem.quantity), 0
   );
 
+  const handleCheckout = async () => {
+    try {
+      // APIエンドポイントのパスを修正
+      const response = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          cart,
+          totalPrice,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('決済セッションの作成に失敗しました');
+      }
+
+      const data = await response.json();
+      
+      if (!data.sessionId) {
+        throw new Error('セッションIDが取得できませんでした');
+      }
+
+      const stripe = await getStripe()();
+      if (!stripe) {
+        throw new Error('Stripeの初期化に失敗しました');
+      }
+
+      await stripe.redirectToCheckout({
+        sessionId: data.sessionId,
+      });
+    } catch (err) {
+      console.error('Error:', err);
+      alert('決済処理中にエラーが発生しました');
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8 text-center">らーめん屋 匠</h1>
@@ -140,7 +191,7 @@ const RamenShopPage = () => {
                         </div>
                         <div className="flex-1">
                           <h3 className="font-medium">{cartItem.item.name}</h3>
-                          <p className="text-red-600">¥{cartItem.item.price.toLocaleString()}</p>
+                          <p className="text-red-600">¥{cartItem.item.price}</p>
                         </div>
                         <div className="flex items-center">
                           <button 
@@ -175,7 +226,10 @@ const RamenShopPage = () => {
                       <span className="font-bold">合計:</span>
                       <span className="font-bold">¥{totalPrice}</span>
                     </div>
-                    <button className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-md transition-colors duration-300">
+                    <button 
+                      onClick={handleCheckout}
+                      className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-md transition-colors duration-300"
+                    >
                       注文する
                     </button>
                   </div>
