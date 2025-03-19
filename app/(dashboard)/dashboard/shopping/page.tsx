@@ -53,7 +53,8 @@ const getStripe = () => {
   
   return () => {
     if (!stripePromise) {
-      stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY ?? '');
+      const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;  
+      stripePromise = loadStripe(publishableKey ?? '');
     }
     return stripePromise;
   };
@@ -124,6 +125,8 @@ const RamenShopPage = () => {
           totalPrice,
         }),
       });
+
+      console.log(response);
 
       if (!response.ok) {
         throw new Error('決済セッションの作成に失敗しました');
