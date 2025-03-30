@@ -10,7 +10,7 @@ type CartProps = {
 
 export const Cart = ({ setIsCartOpen, isCartOpen, cart = [] }: CartProps) => {
   return (
-    <div className="fixed top-4 right-4 z-10">
+    <div className="fixed top-20 right-4 z-10">
       <button 
         onClick={() => setIsCartOpen(!isCartOpen)}
         className="bg-red-600 text-white p-2 rounded-full relative"
