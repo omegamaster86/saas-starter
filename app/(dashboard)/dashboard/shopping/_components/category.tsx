@@ -1,43 +1,33 @@
 import React from 'react'
+import type { RamenItem } from '@/app/types'
+import { Button } from '../_components/button'
 
 type CategoryProps = {
-  selectedCategory: 'all' | 'shoyu' | 'miso';
-  setSelectedCategory: React.Dispatch<React.SetStateAction<'all' | 'shoyu' | 'miso'>>;
+  selectedCategory: RamenItem['category'];
+  setSelectedCategory: React.Dispatch<React.SetStateAction<RamenItem['category']>>;
 }
 
 const Category = ({ selectedCategory, setSelectedCategory }: CategoryProps) => {
   return (
     <div className="flex justify-center mb-8 space-x-4">
-      <button
+      <Button
         onClick={() => setSelectedCategory('all')}
-        className={`px-4 py-2 rounded-full ${
-          selectedCategory === 'all' 
-            ? 'bg-red-600 text-white' 
-            : 'bg-gray-200 hover:bg-gray-300'
-        }`}
+        isActive={selectedCategory === 'all'}
       >
         すべて
-      </button>
-      <button
+      </Button>
+      <Button
         onClick={() => setSelectedCategory('shoyu')}
-        className={`px-4 py-2 rounded-full ${
-          selectedCategory === 'shoyu' 
-            ? 'bg-red-600 text-white' 
-            : 'bg-gray-200 hover:bg-gray-300'
-        }`}
+        isActive={selectedCategory === 'shoyu'}
       >
         醤油ラーメン
-      </button>
-      <button
+      </Button>
+      <Button
         onClick={() => setSelectedCategory('miso')}
-        className={`px-4 py-2 rounded-full ${
-          selectedCategory === 'miso' 
-            ? 'bg-red-600 text-white' 
-            : 'bg-gray-200 hover:bg-gray-300'
-        }`}
+        isActive={selectedCategory === 'miso'}
       >
         味噌ラーメン
-      </button>
+      </Button>
     </div>
   )
 }
