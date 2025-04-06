@@ -1,10 +1,6 @@
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 
-if (!process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY) {
-  throw new Error('Stripe secret key is not set')
-}
-
 const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY!, {
   apiVersion: '2025-01-27.acacia'
 })
@@ -43,4 +39,4 @@ export async function POST(req: Request) {
       { status: 500 }
     )
   }
-} 
+}
